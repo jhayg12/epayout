@@ -48,12 +48,13 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-// $db['default']['hostname'] = 'Driver={SQL Server};Server=192.168.1.136;Database=UBANK';
-$db['default']['hostname'] = '192.168.1.136';
+$db['default']['hostname'] = 'Driver={SQL Server};Server=LMKT-IT002\SQL12;Database=UBANK';
+// $db['default']['hostname'] = '192.168.1.136';
 $db['default']['username'] = 'sa';
 $db['default']['password'] = 'AACIDbase1';
 $db['default']['database'] = 'UBANK';
-$db['default']['dbdriver'] = 'mssql';
+// $db['default']['dbdriver'] = 'mssql';
+$db['default']['dbdriver'] = 'odbc';
 $db['default']['pconnect'] = TRUE;
 $db['default']['dbprefix'] = '';
 $db['default']['db_debug'] = TRUE;
@@ -66,14 +67,16 @@ $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
 
-// $db['db2']['hostname'] = 'Driver={SQL Server};Server=192.168.1.10;Database=AACIProd';
+$db['db2']['hostname'] = 'Driver={SQL Server};Server=LMKT-IT002\SQL12;Database=TestAACIProd';
 //$db['db2']['hostname'] = '192.168.1.10';
-$db['db2']['hostname'] = '192.168.1.12\SAPSQLSERVER';
+// $db['db2']['hostname'] = '192.168.1.12\SAPSQLSERVER';
 $db['db2']['username'] = 'sa';
-//$db['db2']['password'] = 'AACIDbase1';
-$db['db2']['password'] = 'p@ssw0rd.aaci';
-$db['db2']['database'] = 'AACIProd';
-$db['db2']['dbdriver'] = 'mssql';
+$db['db2']['password'] = 'AACIDbase1';
+// $db['db2']['password'] = 'p@ssw0rd.aaci';
+// $db['db2']['database'] = 'AACIProd';
+$db['db2']['database'] = 'TestAACIProd';
+// $db['db2']['dbdriver'] = 'mssql';
+$db['db2']['dbdriver'] = 'odbc';
 $db['db2']['pconnect'] = TRUE;
 $db['db2']['dbprefix'] = '';
 $db['db2']['db_debug'] = TRUE;
@@ -87,7 +90,8 @@ $db['db2']['stricton'] = FALSE;
 
 $db['db3']['hostname'] = 'localhost';
 $db['db3']['username'] = 'root';
-$db['db3']['password'] = 'kr1sl@ngp0';
+// $db['db3']['password'] = 'kr1sl@ngp0';
+$db['db3']['password'] = '';
 $db['db3']['database'] = 'epayout';
 $db['db3']['dbdriver'] = 'mysql';
 $db['db3']['pconnect'] = TRUE;

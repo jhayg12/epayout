@@ -162,9 +162,15 @@ class Usermodel extends CI_Model {
                             CAST(A.U_CWT AS TEXT) 'CWTI', 
                             A.BaseAmnt AS 'BAmount',
                             A.BaseAmntFC AS 'BAmountFC',
-                            B.Address AS 'BeneAddress'
+                            B.Address AS 'BeneAddress',
+                            C.Address2,
+                            C.Address3,
+                            C.Street,
+                            C.Block,
+                            C.City
                         FROM OPCH A 
                             INNER JOIN OCRD B ON A.CardCode = B.CardCode 
+                            INNER JOIN CRD1 C ON B.CardCode = C.CardCode 
                         WHERE A.DocNum = '$inv_no' ");
 
     $qry2 = $db2->query("SELECT 
@@ -200,14 +206,31 @@ class Usermodel extends CI_Model {
                             CAST(A.U_CWT AS TEXT) 'CWTI',
                             A.BaseAmnt AS 'BAmount',
                             A.BaseAmntFC AS 'BAmountFC', 
-                            B.Address AS 'BeneAddress'
+                            B.Address AS 'BeneAddress',
+                            C.Address2,
+                            C.Address3,
+                            C.Street,
+                            C.Block,
+                            C.City
                         FROM ODPO A 
-                            INNER JOIN OCRD B ON A.CardCode = B.CardCode 
+                            INNER JOIN OCRD B ON A.CardCode = B.CardCode
+                            INNER JOIN CRD1 C ON B.CardCode = C.CardCode  
                         WHERE A.DocNum = '$inv_no'");
 
     
     if ($qry->num_rows() > 0) {
-      return $qry->result();
+        $data = $qry->result();
+        $card_code = $data[0]->VendorCode;
+
+        $mysql_db = $this->load->database('db3', TRUE);
+        $qry_acct = $mysql_db->query("SELECT * FROM bank_acct WHERE Code = '$card_code' ");
+        
+        if ($qry_acct->num_rows() > 0) {
+            $result = array_push($data, $qry_acct->result());
+            return $data;
+        }
+
+        // return $data[0]->VendorCode;
     } else {
         if ($qry2->num_rows() > 0) {
             return $qry2->result();
@@ -728,11 +751,37 @@ class Usermodel extends CI_Model {
         $db3 = $this->load->database('db3', TRUE);
         
         $qry = $db3->get('bank_acct');
+        $qry = $db3->query("SELECT t0.*, t0.Id AS 'bId', t1.* FROM bank_acct t0 
+                                LEFT JOIN bank_list t1 ON t1.BranchCode = t0.Bank");
 
         if ($qry->num_rows() > 0) {
             return $qry->result();
         }
 
+    }
+
+    function get_bp_name($bp_code)
+    {
+        $db = $this->load->database('db2', TRUE);
+        $qry = $db->query("SELECT CardName FROM OCRD WHERE CardCode = '$bp_code' ");
+        if ($qry->num_rows() > 0) {
+            $data['row'] = $qry->result();
+            return $data;
+        }  
+    }
+
+    function store_add_bank_account()
+    {
+        $db = $this->load->database('db3', TRUE);
+        $data = array(
+            'Code' => $this->input->post('bp_code'),
+            'Name' => strtoupper($this->input->post('bp_name')),
+            'Bank' => $this->input->post('bene_bank_name'),
+            'Account_No' => $this->input->post('account_code')
+        );
+
+        $db->insert('bank_acct', $data);
+        
     }
 
 

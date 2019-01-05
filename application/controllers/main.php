@@ -18,6 +18,8 @@ class Main extends CI_Controller {
 					$data['inv_no'] = $this->input->post("apv_no");
 					$data['pmethod'] = $this->input->post("pmethod");
 					$data['inv_dtls'] = $this->usermodel->get_invoice_details();
+					print_r($data['inv_dtls']);
+					die;
 					$data['bank_list'] = $this->usermodel->get_bene_bank_list();
 					$data['bank_acct_list'] = $this->usermodel->get_bene_bank_acct_list();
 
@@ -1109,7 +1111,6 @@ class Main extends CI_Controller {
 			// redirect('main/settings_login');
 		}
 
-
 	}
 
 	function bank_acct_dtls() {
@@ -1126,6 +1127,45 @@ class Main extends CI_Controller {
 	function settings_logout() {
 		$this->session->sess_destroy('userdata');
 		redirect('main/settings_login');
+	}
+
+	function get_bp_name()
+	{
+		$bp_code = $this->input->post('bp_code');
+		$result = $this->usermodel->get_bp_name($bp_code);
+		$dd['bp_data'] = $result['row'];
+		echo json_encode($dd);
+	}
+
+	function add_bank_account()
+	{	
+		$data['bank_list'] = $this->usermodel->get_bene_bank_list();
+		$this->load->view('add_bank_account', $data);
+	}
+
+	function store_add_bank_account() 
+	{
+		date_default_timezone_set("Asia/Manila");
+    	$timestamp = date('mdy_His');
+    	$date_today = date('mdY');
+
+		$this->form_validation->set_rules('bp_code', 'BP Code', 'required|trim|xss_clean');
+		$this->form_validation->set_rules('bp_name', 'BP Name', 'required|trim|xss_clean');
+		$this->form_validation->set_rules('bene_bank_name', 'Bank Name', 'required|trim|xss_clean');
+		$this->form_validation->set_rules('account_code', 'Account Number', 'required|trim|xss_clean');
+		
+		if ($this->form_validation->run()) {
+			$bp_code = $this->input->post('bp_code');
+			$bp_name = $this->input->post('bp_name');
+			$bene_bank_name = $this->input->post('bene_bank_name');
+			$account_code = $this->input->post('account_code');
+
+			$this->usermodel->store_add_bank_account();
+			redirect("main/bank_acct_dtls");
+		} else {
+			$this->load->view('add_bank_account', $data);
+		}
+
 	}
 
 

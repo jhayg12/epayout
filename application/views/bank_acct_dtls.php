@@ -61,20 +61,22 @@
                         <th>Id</th>
                         <th>Code</th>
                         <th>Name</th>
-                        <th>Bank</th>
+                        <th>Bank Code</th>
+                        <th>Bank Name</th>
                         <th>Account No.</th>
-                        <th style="text-align: center">Action</th>
+                        <!-- <th style="text-align: center">Action</th> -->
                       </tr>
                     </thead>
                     <tbody>
                       <?php if(isset($bank_rec)): foreach($bank_rec as $ldtls): ?>
                         <tr>
-                            <td><?php echo $ldtls->Id; ?></td>
+                            <td><?php echo $ldtls->bId; ?></td>
                             <td><?php echo $ldtls->Code; ?></td>
                             <td><?php echo $ldtls->Name; ?></td>
                             <td><?php echo $ldtls->Bank; ?></td>
+                            <td><?php echo $ldtls->BankName; ?></td>
                             <td><?php echo $ldtls->Account_No; ?></td>
-                            <td style="text-align: center" id="action"><a href="<?php echo $ldtls->Id ?>" data-toggle="modal"><i class="icon-remove-sign"></i> Delete</a></td>
+                            <!-- <td style="text-align: center" id="action"><a href="<?php echo $ldtls->Id ?>" data-toggle="modal"><i class="icon-remove-sign"></i> Delete</a></td> -->
                         </tr>
                       <?php endforeach; ?><?php  else: ?>
                         <tr>
@@ -85,9 +87,9 @@
                   </table>
                                 </div>
                                 <div class="row-fluid">
-                                    <div class="span12">
-                                        <a href="<?php echo site_url('main/settings_logout'); ?>" role="button" class="btn btn-danger btn-sm pull-right"><i class="icon-off icon-white"></i> Logout</a>
-        
+                                    <div class="pull right">
+                                        <a style="margin-left: 5px;" href="<?php echo site_url('main/settings_logout'); ?>" role="button" class="btn btn-danger btn-sm pull-right"><i class="icon-off icon-white"></i> Logout</a>
+                                        <a href="<?php echo site_url('main/add_bank_account'); ?>" role="button" class="btn btn-success btn-sm pull-right"> Add</a>
                                     </div>
                                 </div>
                             </div>
