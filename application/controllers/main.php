@@ -18,8 +18,8 @@ class Main extends CI_Controller {
 					$data['inv_no'] = $this->input->post("apv_no");
 					$data['pmethod'] = $this->input->post("pmethod");
 					$data['inv_dtls'] = $this->usermodel->get_invoice_details();
-					print_r($data['inv_dtls']);
-					die;
+					// print_r($data['inv_dtls']);
+					// die;
 					$data['bank_list'] = $this->usermodel->get_bene_bank_list();
 					$data['bank_acct_list'] = $this->usermodel->get_bene_bank_acct_list();
 
@@ -67,7 +67,6 @@ class Main extends CI_Controller {
 					$data['error'] = "APV Number <b>".$this->input->post('apv_no')."</b> does not exists";
 					$this->load->view('home', $data);
 				}
-
 
 			}	
 

@@ -221,16 +221,31 @@ class Usermodel extends CI_Model {
     if ($qry->num_rows() > 0) {
         $data = $qry->result();
         $card_code = $data[0]->VendorCode;
-
+        
         $mysql_db = $this->load->database('db3', TRUE);
-        $qry_acct = $mysql_db->query("SELECT * FROM bank_acct WHERE Code = '$card_code' ");
+        $qry_acct = $mysql_db->query("SELECT t0.*, t1.BankName, t1.BankCode, t1.MICR FROM bank_acct t0
+                                        LEFT JOIN bank_list t1 ON t0.Bank = t1.BranchCode
+                                        WHERE t0.Code = '$card_code' ");
         
         if ($qry_acct->num_rows() > 0) {
-            $result = array_push($data, $qry_acct->result());
+            $mysql_db_result = $qry_acct->result();
+            $others = array();
+            for ($i=0; $i<count($mysql_db_result); $i++) {
+                array_push($others, [
+                    'bp_code' => $mysql_db_result[$i]->Code,
+                    'bp_name' => $mysql_db_result[$i]->Name,
+                    'branch_code' => $mysql_db_result[$i]->Bank,
+                    'account_no' => $mysql_db_result[$i]->Account_No,
+                    'bank_code' => $mysql_db_result[$i]->BankCode,
+                    'bank_name' => $mysql_db_result[$i]->BankName,
+                    'micr' => $mysql_db_result[$i]->MICR
+                ]);
+            }
+
+            $data[0]->others = $others;
             return $data;
         }
 
-        // return $data[0]->VendorCode;
     } else {
         if ($qry2->num_rows() > 0) {
             return $qry2->result();

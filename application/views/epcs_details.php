@@ -140,7 +140,9 @@
 
                     <input type="hidden" name="bene_name_orig" id="bene_name_orig" class="span1 m-wrap" value="<?php echo $idtls->BeneficiaryAccountName; ?>">
 
-                    <input type="text" name="bname" id="bname" class="span6 m-wrap" value="<?php echo $this->input->post('bname') ?>"
+                    <!-- <input type="text" name="bname" id="bname" class="span6 m-wrap" value="<?php echo $this->input->post('bname') ?>"
+                      readonly> -->
+                      <input type="text" name="beneficiary_name" id="beneficiary_name" class="span6 m-wrap" value="<?php echo $idtls->others[0]['bp_name']; ?>"
                       readonly>
                   </div>
                 </div>
@@ -149,8 +151,16 @@
                   <label class="control-label" for="bene_acct_select">Beneficiary Account No. <span class="required">*</span></label>
                   <div class="controls">
                     <?php echo form_dropdown('bene_acct', $bank_acct_list, $this->input->post('bene_acct'), 'class="bene_acct span6 m-wrap", id="bene_acct_select" required readonly' ); ?>
-
                     <input type="hidden" name="bacct" id="bacct" class="span1 m-wrap" value="<?php echo $this->input->post('bacct') ?>">
+                    <br>
+                    <?php foreach ($idtls->others as $others): ?>
+                        <?php $mixed_value = $others['account_no'].'|'.$others['bank_code'].'|'.$others['bank_name']; ?>
+                        <input type="radio" name="bene_acct_select" value="<?php ?>">&nbsp;&nbsp;&nbsp;
+                          <?php echo $others['account_no']; ?>
+                          <?php echo $others['bank_code']; ?>
+                          <?php echo $others['bank_name']; ?>
+                        <br>
+                    <?php endforeach; ?>
                   </div>
                 </div>
 
@@ -162,7 +172,7 @@
                     <input type="hidden" name="bank_code" id="bank_code" class="span1 m-wrap" value="<?php echo $this->input->post('bank_code') ?>">
                     <input type="hidden" name="micr_code" id="micr_code" class="span1 m-wrap" value="<?php echo $this->input->post('micr_code') ?>">
                     <input type="hidden" name="branch_code" id="branch_code" class="span1 m-wrap" value="<?php echo $this->input->post('branch_code') ?>">
-                    <input type="text" name="bank_name" id="bank_name" class="span6 m-wrap" value="<?php echo $this->input->post('bank_name') ?>" readonly>
+                    <input type="text" name="bank_name" id="bank_name" class="span6 m-wrap" value="<?php echo $idtls->others['0']['bank_name']; ?>" readonly>
                   </div>
                 </div>
 
@@ -337,9 +347,8 @@
                 $('#micr_code').val(val.MICR);
                 $('#branch_code').val(val.BranchCode);
 
-                $('#bank_name').val($("#bankbname_select :selected").text());
-
-                $('#bname').val($("#bene_name_select :selected").text());
+                // $('#bank_name').val($("#bankbname_select :selected").text());
+                // $('#bname').val($("#bene_name_select :selected").text());
                 $('#bacct').val($("#bene_acct_select :selected").text());
 
               });
